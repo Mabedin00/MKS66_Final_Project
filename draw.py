@@ -72,7 +72,7 @@ def scanline_convert(polygons, i, screen, zbuffer, color):
 
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
-    print("({}, {}, {}) to ({}, {}, {}) to ({}, {}, {})".format(int(x0), int(y0), int(z0), int(x1), int(y1), int(z1), int(x2), int(y2), int(z2)))
+    # print("({}, {}, {}) to ({}, {}, {}) to ({}, {}, {})".format(int(x0), int(y0), int(z0), int(x1), int(y1), int(z1), int(x2), int(y2), int(z2)))
     add_point(polygons, x0, y0, z0)
     add_point(polygons, x1, y1, z1)
     add_point(polygons, x2, y2, z2)

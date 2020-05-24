@@ -1,6 +1,6 @@
 // NOTE: file has .java extension for color highlighting in atom
 
-frames 30
+frames 10
 basename cannon_00
 
 // constants colors [red_ambient, red_diffuse, red_specular] [green] [blue]
@@ -9,11 +9,10 @@ constants steel .0357 .357 .357 .0376 .376 .376 .0396 .396 .396
 constants cannonball_color .04 .4 .4 .043 .43 .43 .042 .42 .42
 
 // vary constants
-vary cannonball_anim 0 29 0 1
-vary slow_down 15 29 0 1
+vary exponential cannonball_anim 0 9 .01 1
+vary linear slow_down 4 9 0 1
 
 push
-cone 150 150 0 50 50
 move -20 0 0 cannonball_anim
 move 5 0 0 slow_down
 move 150 150 0

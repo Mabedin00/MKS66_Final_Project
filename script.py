@@ -65,6 +65,56 @@ def first_pass( commands ):
   {'spinny': 0.02, 'bigenator': 0.04},
 ]
 """
+
+def scale_linear(current_frame, starting_frame, ending_frame, starting_value, ending_value):
+
+    if current_frame >= starting_frame and current_frame <= ending_frame:
+        range_of_frames = ending_frame - starting_frame
+        range_of_values = ending_value - starting_value
+
+        increment_per_value = range_of_values / range_of_frames
+        progress = current_frame - starting_frame
+
+        value = starting_value + increment_per_value * progress
+
+    elif current_frame <= starting_frame:
+        value = starting_value
+    else:
+        value = ending_value
+
+    return value
+
+def scale_quadratic(current_frame, starting_frame, ending_frame, starting_value, ending_value, increment):
+
+    value = 1
+    return value
+
+def scale_exponential(current_frame, starting_frame, ending_frame, starting_value, ending_value):
+
+    if current_frame > starting_frame and current_frame <= ending_frame:
+        # a and b for equation y = ab^x
+
+        if (starting_value == 0):
+            starting_value = .01
+        b = pow(ending_value/starting_value, 1/(ending_frame-starting_frame))
+        a = starting_value / pow(b, starting_frame)
+        value = a * pow(b, current_frame)
+
+    elif current_frame <= starting_frame:
+        value = starting_value
+    else:
+        value = ending_value
+
+    return value
+
+def scale_sinusoidal(current_frame, starting_frame, ending_frame, starting_value, ending_value):
+    value = 1
+    return value
+
+
+
+
+
 def second_pass( commands, num_frames ):
     knobs = []
     frames = []
@@ -72,28 +122,22 @@ def second_pass( commands, num_frames ):
         if command['op'] == 'vary':
             knobs.append(command)
 
-    i = 0
-    while (i < num_frames):
+    current_frame = 0
+    while (current_frame < num_frames):
         frame = {}
         for knob in knobs:
-            if i >= knob['args'][0] and i <= knob['args'][1]:
-
-                starting_frame = knob['args'][0]
-                ending_frame = knob['args'][1]
-
-                range_of_frames = ending_frame - starting_frame
-                range_of_values = knob['args'][3] - knob['args'][2]
-
-                increment_per_value = range_of_values / range_of_frames
-                progress = i - starting_frame
-
-                value = knob['args'][2] + increment_per_value * progress
-            else:
-                value = 0
+            if knob['type'] == 'linear':
+                value = scale_linear(current_frame, knob['args'][0], knob['args'][1], knob['args'][2], knob['args'][3])
+            elif knob['type'] == 'quadratic':
+                value = scale_quadratic(current_frame, knob['args'][0], knob['args'][1], knob['args'][2], knob['args'][3], knob['args'][4])
+            elif knob['type'] == 'exponential':
+                value = scale_exponential(current_frame, knob['args'][0], knob['args'][1], knob['args'][2], knob['args'][3])
+            elif knob['type'] == 'sinusoidal':
+                value = scale_sinusoidal(current_frame, knob['args'][0], knob['args'][1], knob['args'][2], knob['args'][3])
 
             frame[  knob['knob']  ] = value
         frames.append(frame)
-        i += 1
+        current_frame += 1
     return frames
 
 
@@ -143,6 +187,10 @@ def run(filename):
     consts = ''
     coords = []
     coords1 = []
+
+    print (symbols)
+    for command in commands:
+        print(command)
 
     if num_frames == 1:
         for command in commands:
