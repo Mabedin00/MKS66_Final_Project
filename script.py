@@ -112,11 +112,11 @@ def run(filename):
     view = [0,
             0,
             1];
-    ambient = [50,
-               50,
-               50]
+    ambient = [150,
+               150,
+               150]
     light = [[0.5,
-              0.75,
+              -0.75,
               1],
              [255,
               255,
@@ -124,9 +124,9 @@ def run(filename):
 
     color = [0, 0, 0]
     symbols['.white'] = ['constants',
-                         {'red': [0.2, 0.5, 0.5],
-                          'green': [0.2, 0.5, 0.5],
-                          'blue': [0.2, 0.5, 0.5]}]
+                         {'red': [0.2, 0.5, 0.7],
+                          'green': [0.2, 0.5, 0.7],
+                          'blue': [0.2, 0.5, 0.7]}]
     reflect = '.white'
 
     (name, num_frames) = first_pass(commands)
@@ -157,6 +157,16 @@ def run(filename):
                 add_box(tmp,
                         args[0], args[1], args[2],
                         args[3], args[4], args[5])
+                matrix_mult( stack[-1], tmp )
+                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                tmp = []
+                reflect = '.white'
+            elif c == 'cone':
+                if command['constants']:
+                    reflect = command['constants']
+                add_cone(tmp,
+                        args[0], args[1], args[2],
+                        args[3], args[4], step_3d)
                 matrix_mult( stack[-1], tmp )
                 draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
                 tmp = []
@@ -240,6 +250,16 @@ def run(filename):
                     add_box(tmp,
                             args[0], args[1], args[2],
                             args[3], args[4], args[5])
+                    matrix_mult( stack[-1], tmp )
+                    draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                    tmp = []
+                    reflect = '.white'
+                elif c == 'cone':
+                    if command['constants']:
+                        reflect = command['constants']
+                    add_cone(tmp,
+                            args[0], args[1], args[2],
+                            args[3], args[4], step_3d)
                     matrix_mult( stack[-1], tmp )
                     draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
                     tmp = []

@@ -72,6 +72,7 @@ def scanline_convert(polygons, i, screen, zbuffer, color):
 
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
+    print("({}, {}, {}) to ({}, {}, {}) to ({}, {}, {})".format(int(x0), int(y0), int(z0), int(x1), int(y1), int(z1), int(x2), int(y2), int(z2)))
     add_point(polygons, x0, y0, z0)
     add_point(polygons, x1, y1, z1)
     add_point(polygons, x2, y2, z2)
@@ -142,6 +143,25 @@ def add_box( polygons, x, y, z, width, height, depth ):
     #bottom
     add_polygon(polygons, x, y1, z, x1, y1, z1, x1, y1, z)
     add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z1)
+
+# MAKE ORDER CORRECT
+def add_cone(polygons, cx, cy, cz, r, height, step):
+
+    i = 0
+    while i <= step:
+        t = float(i)/step
+        x1 = r * math.cos(2*math.pi * t) + cx
+        z1 = r * math.sin(2*math.pi * t) + cz
+
+        i+=1
+        t = float(i)/step
+
+        x2 = r * math.cos(2*math.pi * t) + cx
+        z2 = r * math.sin(2*math.pi * t) + cz
+
+        add_polygon(polygons, cx, cy, cz, x1, cy-height, z1, x2, cy-height, z2)
+        add_polygon(polygons, x1, cy-height, z1, cx, cy-height, cz, x2, cy-height, z2)
+
 
 def add_sphere(polygons, cx, cy, cz, r, step ):
     points = generate_sphere(cx, cy, cz, r, step)

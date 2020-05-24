@@ -13,6 +13,7 @@ vary cannonball_anim 0 29 0 1
 vary slow_down 15 29 0 1
 
 push
+cone 150 150 0 50 50
 move -20 0 0 cannonball_anim
 move 5 0 0 slow_down
 move 150 150 0
