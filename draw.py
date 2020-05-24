@@ -165,6 +165,37 @@ def add_cone(polygons, cx, cy, cz, r, height, step):
 def add_pyramid(polygons, cx, cy, cz, side, height):
     add_cone(polygons, cx, cy, cz, side/2, height, 4)
 
+def add_cylinder(polygons, cx, cy, cz, r, height, step):
+
+    i = 0
+    while i <= step:
+        t = float(i)/step
+        x1 = r * math.cos(2*math.pi * t) + cx
+        z1 = r * math.sin(2*math.pi * t) + cz
+
+        i+=1
+        t = float(i)/step
+
+        x2 = r * math.cos(2*math.pi * t) + cx
+        z2 = r * math.sin(2*math.pi * t) + cz
+
+
+        # p0 = top left = x1, cy, z1
+        # p1 = top right = x2, cy, z2
+        # p2 = bottom right = x1, cy-height, z1
+        # p3 = bottom left = x2, cy-height, z2
+        #
+        # 2 0 1
+        # 3 0 2
+
+        add_polygon(polygons, x1, cy, z1, x2, cy-height, z2, x1, cy-height, z1)
+        add_polygon(polygons, x2, cy-height, z2, x1, cy, z1, x2, cy, z2)
+
+
+        #circles
+        add_polygon(polygons, x1, cy-height, z1, x2, cy-height, z2, cx, cy-height, cz)
+        add_polygon(polygons, x1, cy, z1, cx, cy, cz, x2, cy, z2)
+
 
 def add_sphere(polygons, cx, cy, cz, r, step ):
     points = generate_sphere(cx, cy, cz, r, step)

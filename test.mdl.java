@@ -1,6 +1,6 @@
 
 push
-rotate x 10
-rotate y 10
-pyramid 250 400 0 100 100
+rotate x 20
+rotate y 20
+cylinder 250 400 0 100 300
 display
