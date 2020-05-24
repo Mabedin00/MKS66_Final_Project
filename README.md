@@ -9,7 +9,7 @@
       - cone x y z radius height 
       - x y z- is the position of the center of the base
     - Pyramid
-      - pyramid x y z side depth
+      - pyramid x y z side height
       - x y z- is the position of the apex
   * Change behavior of vary
     - Oscilating/sinusoidal
