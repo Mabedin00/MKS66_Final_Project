@@ -162,6 +162,9 @@ def add_cone(polygons, cx, cy, cz, r, height, step):
         add_polygon(polygons, cx, cy, cz, x1, cy-height, z1, x2, cy-height, z2)
         add_polygon(polygons, x1, cy-height, z1, cx, cy-height, cz, x2, cy-height, z2)
 
+def add_pyramid(polygons, cx, cy, cz, side, height):
+    add_cone(polygons, cx, cy, cz, side/2, height, 4)
+
 
 def add_sphere(polygons, cx, cy, cz, r, step ):
     points = generate_sphere(cx, cy, cz, r, step)
