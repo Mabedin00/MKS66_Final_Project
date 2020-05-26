@@ -1,4 +1,4 @@
-import mdl, sys
+import mdl, sys, math
 from display import *
 from matrix import *
 from draw import *
@@ -97,7 +97,7 @@ def scale_quadratic(current_frame, starting_frame, ending_frame, starting_value,
 
     print (value)
 
-    
+
     return value
 
 def scale_exponential(current_frame, starting_frame, ending_frame, starting_value, ending_value):
@@ -111,15 +111,23 @@ def scale_exponential(current_frame, starting_frame, ending_frame, starting_valu
         a = starting_value / pow(b, starting_frame)
         value = a * pow(b, current_frame)
 
+    return value
+
+def scale_sinusoidal(current_frame, starting_frame, ending_frame, starting_value, ending_value, increment):
+
+    if current_frame > starting_frame and current_frame <= ending_frame:
+
+        range_of_frames = ending_frame - starting_frame
+        period = range_of_frames / increment
+
+        amplitude = (starting_value + ending_value) / 2
+        value = amplitude * math.sin(2 * math.pi * current_frame/ period )
+
     elif current_frame <= starting_frame:
         value = starting_value
     else:
         value = ending_value
 
-    return value
-
-def scale_sinusoidal(current_frame, starting_frame, ending_frame, starting_value, ending_value):
-    value = 1
     return value
 
 
@@ -144,7 +152,7 @@ def second_pass( commands, num_frames ):
             elif knob['type'] == 'exponential':
                 value = scale_exponential(current_frame, knob['args'][0], knob['args'][1], knob['args'][2], knob['args'][3])
             elif knob['type'] == 'sinusoidal':
-                value = scale_sinusoidal(current_frame, knob['args'][0], knob['args'][1], knob['args'][2], knob['args'][3])
+                value = scale_sinusoidal(current_frame, knob['args'][0], knob['args'][1], knob['args'][2], knob['args'][3], knob['args'][4])
 
             frame[  knob['knob']  ] = value
         frames.append(frame)
