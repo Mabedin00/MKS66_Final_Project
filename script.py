@@ -86,7 +86,18 @@ def scale_linear(current_frame, starting_frame, ending_frame, starting_value, en
 
 def scale_quadratic(current_frame, starting_frame, ending_frame, starting_value, ending_value, increment):
 
-    value = 1
+    if current_frame > starting_frame and current_frame <= ending_frame:
+        value = increment * pow(current_frame, 2)
+        if (value > ending_value):
+            value = ending_value
+    elif current_frame <= starting_frame:
+        value = starting_value
+    else:
+        value = ending_value
+
+    print (value)
+
+    
     return value
 
 def scale_exponential(current_frame, starting_frame, ending_frame, starting_value, ending_value):
