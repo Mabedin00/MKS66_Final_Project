@@ -45,4 +45,3 @@ push
 move 280 0 -30
 move 300 0 0 cannonball_anim
 sphere cannonball_color 0 0 0 25
-display

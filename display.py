@@ -2,14 +2,57 @@ from subprocess import Popen, PIPE
 from os import remove, fork, execlp
 
 #constants
-XRES = 500
-YRES = 500
+XRES = 1000
+YRES = 1000
 MAX_COLOR = 255
 RED = 0
 GREEN = 1
 BLUE = 2
 
 DEFAULT_COLOR = [0, 0, 0]
+
+def smooth_colors(screen, x, y):
+    # print(x, y)
+    # store_x = x
+    # store_y = y
+    #
+    # x = 0
+    # while (x < XRES):
+    #     y = 0
+    #     while (y < YRES):
+    #         if (screen[x][y][RED] != 0 or screen[x][y][GREEN] != 0 or screen[x][y][BLUE] != 0):
+    #             # print(screen[x][y], x, y)
+    #             red = int((screen[x][y][RED] + screen[x+1][y][RED] + screen[x][y+1][RED] + screen[x+1][y+1][RED]) / 4)
+    #             # print (x, y, red, red != 0)
+    #         y += 1
+    #     x += 1
+    #
+    # x = store_x
+    # y = store_y
+
+    red = int((screen[x][y][RED] + screen[x+1][y][RED] + screen[x][y+1][RED] + screen[x+1][y+1][RED]) / 4)
+    green = int((screen[x][y][GREEN] + screen[x+1][y][GREEN] + screen[x][y+1][GREEN] + screen[x+1][y+1][GREEN]) / 4)
+    blue = int((screen[x][y][BLUE] + screen[x+1][y][BLUE] + screen[x][y+1][BLUE] + screen[x+1][y+1][BLUE]) / 4)
+    # print(red)
+    # if (red != 0 or green != 0 or blue != 0):
+        # print (red, green, blue)
+
+
+    return [red, green, blue]
+
+
+def anti_alias(screen):
+
+    smaller_screen = []
+    for x in range( int(YRES / 2) - 1 ):
+        row = []
+        smaller_screen.append( row )
+        for y in range( int(XRES / 2) - 1 ):
+            smaller_screen[x].append( smooth_colors(screen, x*2, y*2) )
+
+    smaller_screen[0][0] = [255, 0, 0]
+    return smaller_screen
+
 
 def new_screen( width = XRES, height = YRES ):
     screen = []
@@ -58,22 +101,10 @@ def save_ppm( screen, fname ):
         ppm+= row + '\n'
     f.write( ppm )
     f.close()
-# def save_ppm( screen, fname ):
-#     f = open( fname, 'w' )
-#     ppm = 'P3\n' + str(len(screen[0])) +' '+ str(len(screen)) +' '+ str(MAX_COLOR) +'\n'
-#     rows = []
-#     for y in range( len(screen) ):
-#         row = []
-#         for x in range( len(screen[y]) ):
-#             pixel = screen[y][x]
-#             row.append(' '.join([str(x) for x in pixel]))
-#         rows.append(' '.join(row))
-#     ppm+= '\n'.join(rows)
-#     print ppm
-#     f.write( ppm )
-#     f.close()
 
 def save_extension( screen, fname ):
+    screen = anti_alias(screen)
+
     ppm_name = fname[:fname.find('.')] + '.ppm'
     save_ppm( screen, ppm_name )
     p = Popen( ['convert', ppm_name, fname ], stdin=PIPE, stdout = PIPE )
@@ -81,6 +112,7 @@ def save_extension( screen, fname ):
     remove(ppm_name)
 
 def display( screen ):
+    print ('called display')
     ppm_name = 'pic.ppm'
     save_ppm( screen, ppm_name )
     p = Popen( ['display', ppm_name], stdin=PIPE, stdout = PIPE )

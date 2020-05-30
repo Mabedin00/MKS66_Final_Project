@@ -110,6 +110,10 @@ def scale_exponential(current_frame, starting_frame, ending_frame, starting_valu
         b = pow(ending_value/starting_value, 1/(ending_frame-starting_frame))
         a = starting_value / pow(b, starting_frame)
         value = a * pow(b, current_frame)
+    elif current_frame <= starting_frame:
+        value = starting_value
+    else:
+        value = ending_value
 
     return value
 
@@ -121,7 +125,7 @@ def scale_sinusoidal(current_frame, starting_frame, ending_frame, starting_value
         period = range_of_frames / increment
 
         amplitude = (starting_value + ending_value) / 2
-        value = amplitude * math.sin(2 * math.pi * current_frame/ period )
+        value = amplitude * math.cos(2 * math.pi * current_frame/ period )
 
     elif current_frame <= starting_frame:
         value = starting_value
@@ -308,6 +312,7 @@ def run(filename):
             elif c == 'pop':
                 stack.pop()
             elif c == 'display':
+
                 display(screen)
             elif c == 'save':
                 save_extension(screen, args[0])
@@ -442,6 +447,8 @@ def run(filename):
                 frame = "0" + str(frame)
             else:
                 frame = str(frame)
+
+
             save_extension(screen, "anim/" + name + frame + ".png")
             clear_screen(screen)
             clear_zbuffer(zbuffer)
