@@ -2,8 +2,8 @@ from subprocess import Popen, PIPE
 from os import remove, fork, execlp
 
 #constants
-XRES = 1000
-YRES = 1000
+XRES = 2000
+YRES = 2000
 MAX_COLOR = 255
 RED = 0
 GREEN = 1

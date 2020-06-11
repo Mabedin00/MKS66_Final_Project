@@ -1,6 +1,6 @@
 // NOTE: file has .java extension for color highlighting in atom
 
-frames 100
+frames 75
 basename masterpiece_00
 
 // constants colors [red_ambient, red_diffuse, red_specular] [green] [blue]
@@ -21,12 +21,12 @@ move 500 1000 0
 rotate x 20
 rotate z 75 hang
 rotate z 25 hang_end
-move 0 -1200 0 gravity
 push
 rotate z 60 hang_end_cylinder
 move 900 0 0 momentum
 cylinder 0 0 0 2 230
 pop
+move 0 -1200 0 gravity
 move 1575 0 0 momentum
 move 0 -230 0
 cone gnome_hat 0 0 0 50 80
