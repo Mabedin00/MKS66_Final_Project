@@ -158,9 +158,13 @@ def add_cone(polygons, cx, cy, cz, r, height, step):
 
         x2 = r * math.cos(2*math.pi * t) + cx
         z2 = r * math.sin(2*math.pi * t) + cz
+        #
+        # add_polygon(polygons, cx, cy, cz, x1, cy-height, z1, x2, cy-height, z2)
+        # add_polygon(polygons, x1, cy-height, z1, cx, cy-height, cz, x2, cy-height, z2)
 
-        add_polygon(polygons, cx, cy, cz, x1, cy-height, z1, x2, cy-height, z2)
-        add_polygon(polygons, x1, cy-height, z1, cx, cy-height, cz, x2, cy-height, z2)
+
+        add_polygon(polygons, cx, cy, cz, x2, cy-height, z2, x1, cy-height, z1)
+        add_polygon(polygons, x1, cy-height, z1, x2, cy-height, z2, cx, cy-height, cz)
 
 def add_pyramid(polygons, cx, cy, cz, side, height):
     add_cone(polygons, cx, cy, cz, side/2, height, 4)

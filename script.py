@@ -87,7 +87,7 @@ def scale_linear(current_frame, starting_frame, ending_frame, starting_value, en
 def scale_quadratic(current_frame, starting_frame, ending_frame, starting_value, ending_value, increment):
 
     if current_frame > starting_frame and current_frame <= ending_frame:
-        value = increment * pow(current_frame, 2)
+        value = increment * pow(current_frame - starting_frame, 2)
         if (value > ending_value):
             value = ending_value
     elif current_frame <= starting_frame:
@@ -125,12 +125,12 @@ def scale_sinusoidal(current_frame, starting_frame, ending_frame, starting_value
         period = range_of_frames / increment
 
         amplitude = (starting_value + ending_value) / 2
-        value = amplitude * math.cos(2 * math.pi * current_frame/ period )
+        value = amplitude * math.sin(2 * math.pi * (current_frame-starting_frame)/ period )
 
     elif current_frame <= starting_frame:
         value = starting_value
     else:
-        value = ending_value
+        value = starting_value
 
     return value
 
@@ -183,7 +183,7 @@ def run(filename):
                150,
                150]
     light = [[0.5,
-              -0.75,
+              0.75,
               1],
              [255,
               255,
@@ -444,6 +444,8 @@ def run(filename):
                 # end operation loop
             print ("Generating frame " + str(frame) + "...")
             if (frame < 10):
+                frame = "00" + str(frame)
+            elif (frame < 100):
                 frame = "0" + str(frame)
             else:
                 frame = str(frame)
